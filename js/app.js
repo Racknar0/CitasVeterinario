@@ -12,8 +12,41 @@ const sintomasInput = document.querySelector("#sintomas");
 const formulario = document.querySelector("#nueva-cita");
 const contenedorCitas = document.querySelector("#citas");
 
+class  Citas {
+    constructor () {
+        this.citas = [];
+    }
+}
 
-/************** ( 'RESITRAR EVENTOS' ) **************/
+
+class  UI {
+    imprimirAlerta(mensaje, tipo) {
+        //crear div
+        const divMensaje = document.createElement('DIV');
+        divMensaje.classList.add('text-center', 'alert', 'd-block', 'col-12')
+        
+
+        // Agregar clase en base al tipo
+        if(tipo === 'error') {
+            divMensaje.classList.add('alert-danger');
+        } else {
+            divMensaje.classList.add('alert-success');
+        }
+        //mensaje de error 
+        divMensaje.textContent = mensaje;
+        //agrega al dom
+        document.querySelector('#contenido').insertBefore(divMensaje , document.querySelector('.agregar-cita'));
+        //quitar mensaje 5 seg
+        setTimeout(() => {
+            divMensaje.remove();
+        }, 5000);
+    }
+}
+
+const ui = new UI();
+const administrarCitas = new Citas();
+
+/************** ( 'REGISTRAR EVENTOS' ) **************/
 eventListeners();
 
 function eventListeners() {
@@ -23,11 +56,13 @@ function eventListeners() {
   fechaInput.addEventListener("input", datosCita);
   horaInput.addEventListener("input", datosCita);
   sintomasInput.addEventListener("input", datosCita);
+
+  formulario.addEventListener("submit", nuevaCita);
 }
 
 /************** ( 'OBJETO CON INFO DE LAS CITAS' ) **************/
 const citaObj = {
-  masota: "",
+  mascota: "",
   propietario: "",
   telefono: "",
   fecha: "",
@@ -36,11 +71,27 @@ const citaObj = {
 };
 
 
-/************** ( 'FUCNCIONES' ) **************/
+/************** ( 'FUNCTIONS' ) **************/
 
 //agrega datpos de la cita
 function datosCita(e) {
   citaObj[e.target.name] = e.target.value;
 
   console.log(citaObj);
+}
+
+//valida y agrega nueva citas a la calse de citas
+function nuevaCita (e) {
+    e.preventDefault();
+
+    // Extraer info de obj de cita
+    const {mascota , propietario, telefono, fecha, hora, sintomas} = citaObj;
+
+    // Validar
+    if ( mascota === '' || propietario === '' || telefono === '' || fecha === '' || hora === '' || sintomas === '') {
+        ui.imprimirAlerta('Todos los campos son obligatorios', 'error');
+
+        return;
+    }
+
 }
