@@ -16,6 +16,11 @@ class  Citas {
     constructor () {
         this.citas = [];
     }
+
+    agregarCita(cita) {
+        this.citas = [...this.citas, cita];
+        console.log(this.citas);
+    }
 }
 
 
@@ -76,8 +81,6 @@ const citaObj = {
 //agrega datpos de la cita
 function datosCita(e) {
   citaObj[e.target.name] = e.target.value;
-
-  console.log(citaObj);
 }
 
 //valida y agrega nueva citas a la calse de citas
@@ -88,10 +91,32 @@ function nuevaCita (e) {
     const {mascota , propietario, telefono, fecha, hora, sintomas} = citaObj;
 
     // Validar
-    if ( mascota === '' || propietario === '' || telefono === '' || fecha === '' || hora === '' || sintomas === '') {
+    if ( mascota === ''  || propietario === '' || telefono === '' || fecha === '' || hora === '' || sintomas === '' ) {
         ui.imprimirAlerta('Todos los campos son obligatorios', 'error');
 
+        
         return;
-    }
+    }  
+    
+    // generar id unico
+    citaObj.id = Date.now();
 
+    //creando una nueva cita
+    administrarCitas.agregarCita({...citaObj}); //! se añade dentro de un objeto para q se pase el ultimo valor
+
+    // Reinicar el objeto para la validacion
+    reiniciarObjeto ();
+    formulario.reset();
+
+    // Mostrar Html de las citas
 }
+
+
+function reiniciarObjeto () {
+        citaObj.mascota = "",
+        citaObj.propietario = "",
+        citaObj.telefono = "",
+        citaObj.fecha = "",
+        citaObj.hora = "",
+        citaObj.sintomas = ""
+};
