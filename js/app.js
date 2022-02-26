@@ -25,6 +25,10 @@ class  Citas {
     eliminarCita(id){
         this.citas = this.citas.filter( cita => cita.id !== id)
     }
+
+    editarCita(citaActualizada) {
+        this.citas = this.citas.map( cita => cita.id === citaActualizada.id ? citaActualizada : cita)
+    }
 }
 
 
@@ -178,8 +182,9 @@ function nuevaCita (e) {
         ui.imprimirAlerta('Se edito correctamente')
 
         // pasar el objeto de la cita a edicion
+        administrarCitas.editarCita({...citaObj})
 
-
+        // regresar texto del boton a su estado original
         formulario.querySelector('button[type="submit"]').textContent = 'Crear cita'
 
         //retirar modo edicion
@@ -241,11 +246,11 @@ function cargarEdicion(cita) {
 
     // lenar el objeto
     citaObj.mascota = mascota;
-    citaObj.propietario = mascota;
-    citaObj.telefono = mascota;
-    citaObj.fecha = mascota;
-    citaObj.hora = mascota;
-    citaObj.sintomas = mascota;
+    citaObj.propietario = propietario;
+    citaObj.telefono = telefono;
+    citaObj.fecha = fecha;
+    citaObj.hora = hora;
+    citaObj.sintomas = sintomas;
     citaObj.id = id;
 
 
